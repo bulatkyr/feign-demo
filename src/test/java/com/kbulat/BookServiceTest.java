@@ -11,7 +11,17 @@ class BookServiceTest {
 
   @Test
   public void findAllTest() {
-    assertEquals(4, service.findAll().size());
+    assertEquals(4, service.findAll("ASC", 7, 10).size());
+  }
+
+  @Test
+  public void findAllQueryMapTest() {
+    assertEquals(4, service.findAllQueryMap("ASC", 7, 10).size());
+  }
+
+  @Test
+  public void findAllPageRequestTest() {
+    assertEquals(4, service.findAllPageRequest("ASC", 7, 10).size());
   }
 
   @Test
@@ -35,7 +45,7 @@ class BookServiceTest {
 
     service.deleteById(5L);
 
-    assertEquals(4, service.findAll().size());
+    assertEquals(4, service.findAll("ASC", 7, 10).size());
   }
 
   @Test

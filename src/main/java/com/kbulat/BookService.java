@@ -2,6 +2,7 @@ package com.kbulat;
 
 import com.kbulat.api.BookClient;
 import com.kbulat.model.Book;
+import com.kbulat.model.PageRequest;
 import feign.Feign;
 import feign.Logger;
 import feign.gson.GsonDecoder;
@@ -10,6 +11,7 @@ import feign.okhttp.OkHttpClient;
 import feign.slf4j.Slf4jLogger;
 
 import java.util.List;
+import java.util.Map;
 
 public class BookService {
 
@@ -27,8 +29,17 @@ public class BookService {
             .target(BookClient.class, BOOKS_API_URL);
   }
 
-  public List<Book> findAll() {
-    return bookClient.findAll();
+  public List<Book> findAll(String sort, int pageNumber, int count) {
+    return bookClient.findAll(sort, pageNumber, count);
+  }
+
+  public List<Book> findAllQueryMap(String sort, int pageNumber, int count) {
+    Map<String, Object> queryMap = Map.of("sort", sort, "pageNumber", pageNumber, "count", count);
+    return bookClient.findAll(queryMap);
+  }
+
+  public List<Book> findAllPageRequest(String sort, int pageNumber, int pageSize) {
+    return bookClient.findAll(new PageRequest(sort, pageNumber, pageSize));
   }
 
   public Book findById(Long id) {
@@ -46,5 +57,4 @@ public class BookService {
   public void deleteById(Long id) {
     bookClient.deleteById(id);
   }
-
 }
